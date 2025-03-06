@@ -1,31 +1,16 @@
-package com.example.addressbook.model;
+package com.example.addressbook.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-public class AddressBook {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AddressBookDTO {
     private String name;
     private String phoneNumber;
     private String email;
 
-    public AddressBook() {}
+    public AddressBookDTO() {}
 
-    public AddressBook(String name, String phoneNumber, String email) {
+    public AddressBookDTO(String name, String phoneNumber, String email) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
