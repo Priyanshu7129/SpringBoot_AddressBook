@@ -3,8 +3,10 @@ package com.example.addressbook.service;
 import com.example.addressbook.dto.AddressBookDTO;
 import com.example.addressbook.model.AddressBook;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,14 @@ public class AddressBookService {
 
     private final List<AddressBook> addressBookList = new ArrayList<>();
     private final AtomicLong idCounter = new AtomicLong(1);
+
+    @Value("${spring.datasource.url}")
+    private String databaseUrl;
+
+    @PostConstruct
+    public void init() {
+        log.info("Database URL: {}", databaseUrl);
+    }
 
     public List<AddressBookDTO> getAllContacts() {
         log.debug("Fetching all contacts...");
