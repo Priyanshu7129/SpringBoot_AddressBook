@@ -2,11 +2,13 @@ package com.example.addressbook.controller;
 
 import com.example.addressbook.dto.AddressBookDTO;
 import com.example.addressbook.service.AddressBookService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/addressbook")
@@ -31,22 +33,14 @@ public class AddressBookController {
     }
 
     @PostMapping
-    public AddressBookDTO addContact(@RequestBody AddressBookDTO dto) {
-        return service.addContact(dto);
+    public ResponseEntity<?> addContact(@Valid @RequestBody AddressBookDTO dto) {
+        return ResponseEntity.ok(service.addContact(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AddressBookDTO> updateContact(@PathVariable Long id, @RequestBody AddressBookDTO dto) {
+    public ResponseEntity<?> updateContact(@PathVariable Long id, @Valid @RequestBody AddressBookDTO dto) {
         Optional<AddressBookDTO> updatedContact = service.updateContact(id, dto);
         return updatedContact.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
-        if (service.deleteContact(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
     }
 }
