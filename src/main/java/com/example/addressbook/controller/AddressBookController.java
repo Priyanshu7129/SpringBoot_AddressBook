@@ -27,10 +27,10 @@ public class AddressBookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AddressBookDTO> getContactById(@PathVariable Long id) {
-        Optional<AddressBookDTO> contact = service.getContactById(id);
-        return contact.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        AddressBookDTO contact = service.getContactById(id);
+        return ResponseEntity.ok(contact);
     }
+
 
     @PostMapping
     public ResponseEntity<?> addContact(@Valid @RequestBody AddressBookDTO dto) {
@@ -43,4 +43,15 @@ public class AddressBookController {
         return updatedContact.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteContact(@PathVariable Long id) {
+        boolean deleted = service.deleteContact(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } else {
+            return ResponseEntity.status(404).body("Contact with ID " + id + " not found");
+        }
+    }
+
+
 }
